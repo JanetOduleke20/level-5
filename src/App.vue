@@ -1,26 +1,63 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+<div>
+ 
+
+  <router-view/>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+// import { usePostsStore } from './stores/PostsStore'
+import axios from 'axios'
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  
+
+  data() {
+    return {
+      delay: null,
+      isPlaying: false,
+      posts: []
+    }
+  },
+  beforeMount() {
+    axios.get("http://localhost:8000/api/getPosts").then((res)=> {
+        console.log(res.data.posts);
+      this.posts = res.data.posts
+    })
+  },
+  methods: {
+    startGame() {
+      this.isPlaying = true;
+      this.delay = Math.random() * 5000;
+    },
+    gameResult(res) {
+      console.log(res);
+    }  
   }
+
+
+
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   margin-top: 60px;
+}
+.availableItems {
+  background-color: gold;
+  padding: 8px 10px;
+  /* text-align: center; */
+}
+a {
+  text-decoration: none;
+  color: blue
+
 }
 </style>
